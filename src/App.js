@@ -1,34 +1,32 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {connect} from 'react-redux';
 
 class App extends Component {
-
-  state = {
-    likes:0
-  }
-
-  handleLike = () => {
-    this.setState({
-      likes:++this.state.likes
-    })
-  }
-
-  handleDislike = () => {
-    this.setState({
-      likes:--this.state.likes
-    })
-  }
 
   render() {
     return (
       <div className="App">
-        <div>Total likes {this.state.likes}</div>
-        <button onClick={this.handleLike}>Click to like</button>
-        <button onClick={this.handleDislike}>Click to dislike</button>
+        <div>Total likes {this.props.likes}</div>
+        <button onClick={this.props.handleLike}>Click to like</button>
+        <button onClick={this.props.handleDislike}>Click to dislike</button>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    likes: state.likes
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleLike: () => dispatch({type:'like'}),
+    handleDislike: () => dispatch({type:'dislike'}),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
